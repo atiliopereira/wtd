@@ -1,5 +1,13 @@
 from django.contrib import admin
-from app.events.models import Event
+from app.events.models import Event, Tag
+
+
+@admin.register(Tag)
+class TagAdmin(admin.ModelAdmin):
+    list_display = ("id", "name")
+    search_fields = ("id", "name")
+    fields = ("name",)
+    readonly_fields = ("id",)
 
 
 @admin.register(Event)
@@ -17,5 +25,6 @@ class EventAdmin(admin.ModelAdmin):
         "date",
         "location",
         "status",
+        "tags",
     )
-    readonly_fields = ("id", "status", "created_at", "updated_at")
+    readonly_fields = ("id", "status", "tags", "created_at", "updated_at")
