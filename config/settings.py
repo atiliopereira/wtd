@@ -45,9 +45,13 @@ DJANGO_APPS = [
     "django.contrib.staticfiles",
 ]
 
+EXTERNAL_APPS = [
+    "rest_framework",
+]
+
 LOCAL_APPS = ["app.events.apps.EventsConfig"]
 
-INSTALLED_APPS = DJANGO_APPS + LOCAL_APPS
+INSTALLED_APPS = DJANGO_APPS + EXTERNAL_APPS + LOCAL_APPS
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
