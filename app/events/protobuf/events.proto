@@ -6,9 +6,9 @@ message Tag {
 
 message Event {
     enum Status {
-        CANCELED = 0;
-        PENDING = 1;
-        CONFIRMED = 2;
+        Canceled = 0;
+        Pending = 1;
+        Confirmed = 2;
     }
 
     string title = 1;
