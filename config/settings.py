@@ -47,6 +47,7 @@ DJANGO_APPS = [
 
 EXTERNAL_APPS = [
     "rest_framework",
+    "django_grpc_framework",
 ]
 
 LOCAL_APPS = ["app.events.apps.EventsConfig"]
