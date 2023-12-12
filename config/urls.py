@@ -16,7 +16,15 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from app.events.services import EventService
+from app.events.protobuf import events_pb2_grpc
 
 urlpatterns = [
     path("admin/", admin.site.urls),
 ]
+
+
+def grpc_handlers(server):
+    events_pb2_grpc.add_EventServiceServicer_to_server(
+        EventService.as_servicer(), server
+    )
