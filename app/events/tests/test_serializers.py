@@ -51,3 +51,159 @@ class TestSerializers(TestCase):
         self.assertEqual(len(serializer.data["tags"]), 2)
         self.assertEqual(serializer.data["tags"][0]["name"], self.tag.name)
         self.assertEqual(serializer.data["tags"][1]["name"], new_tag.name)
+
+    def test_event_serializer_create_with_existing_tag(self):
+        data = {
+            "title": "Test Event Create",
+            "description": "Test Description",
+            "date": "2024-01-01T00:00:00Z",
+            "location": "Test Location",
+            "tags": [{"name": "Test Tag"}],
+        }
+        serializer = EventSerializer(data=data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        self.assertEqual(
+            models.Event.objects.filter(title="Test Event Create").count(),
+            1,
+        )
+
+    def test_event_serializer_create_create_tag(self):
+        data = {
+            "title": "Test Event Create Create Tag",
+            "description": "Test Description",
+            "date": "2024-01-01T00:00:00Z",
+            "location": "Test Location",
+            "tags": [{"name": "New Tag"}],
+        }
+        serializer = EventSerializer(data=data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        self.assertEqual(
+            models.Event.objects.filter(title="Test Event Create Create Tag").count(),
+            1,
+        )
+        self.assertEqual(
+            models.Tag.objects.filter(name="New Tag").count(),
+            1,
+        )
+
+    def test_event_serializer_update(self):
+        data = {
+            "title": "Test Event Update",
+            "description": "Test Description",
+            "date": "2024-01-01T00:00:00Z",
+            "location": "Test Location",
+            "tags": [{"name": "Test Tag"}],
+        }
+        serializer = EventSerializer(self.event, data=data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        self.assertEqual(
+            models.Event.objects.filter(title="Test Event Update").count(),
+            1,
+        )
+        self.assertEqual(
+            models.Event.objects.filter(title="Test Event").count(),
+            0,
+        )
+        self.assertEqual(
+            models.Tag.objects.filter(name="Test Tag").count(),
+            1,
+        )
+        self.assertEqual(
+            models.Tag.objects.filter(name="New Tag").count(),
+            0,
+        )
+
+    def test_event_serializer_update_create_tag(self):
+        data = {
+            "title": "Test Event Update Create Tag",
+            "description": "Test Description",
+            "date": "2024-01-01T00:00:00Z",
+            "location": "Test Location",
+            "tags": [{"name": "New Tag"}],
+        }
+        serializer = EventSerializer(self.event, data=data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        self.assertEqual(
+            models.Event.objects.filter(title="Test Event Update Create Tag").count(),
+            1,
+        )
+        self.assertEqual(
+            models.Event.objects.filter(title="Test Event").count(),
+            0,
+        )
+        self.assertEqual(
+            models.Tag.objects.filter(name="New Tag").count(),
+            1,
+        )
+        self.assertEqual(
+            models.Tag.objects.filter(name="Test Tag").count(),
+            1,
+        )
+
+    def test_event_serializer_update_remove_tag(self):
+        data = {
+            "title": "Test Event Update Remove Tag",
+            "description": "Test Description",
+            "date": "2024-01-01T00:00:00Z",
+            "location": "Test Location",
+            "tags": [],
+        }
+        serializer = EventSerializer(self.event, data=data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        self.assertEqual(
+            models.Event.objects.filter(title="Test Event Update Remove Tag").count(),
+            1,
+        )
+        self.assertEqual(
+            models.Event.objects.filter(title="Test Event").count(),
+            0,
+        )
+        self.assertEqual(
+            models.Tag.objects.filter(name="New Tag").count(),
+            0,
+        )
+        self.assertEqual(
+            models.Tag.objects.filter(name="Test Tag").count(),
+            1,
+        )
+
+    def test_event_serializer_update_remove_tag_add_new_tag(self):
+        data = {
+            "title": "Test Event Update Remove Tag Add New Tag",
+            "description": "Test Description",
+            "date": "2024-01-01T00:00:00Z",
+            "location": "Test Location",
+            "tags": [{"name": "New Tag"}, {"name": "Test Tag"}],
+        }
+        serializer = EventSerializer(self.event, data=data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        self.assertEqual(
+            models.Event.objects.filter(
+                title="Test Event Update Remove Tag Add New Tag"
+            ).count(),
+            1,
+        )
+        self.assertEqual(
+            models.Event.objects.filter(title="Test Event").count(),
+            0,
+        )
+        self.assertEqual(
+            models.Tag.objects.filter(name="New Tag").count(),
+            1,
+        )
+        self.assertEqual(
+            models.Tag.objects.filter(name="Test Tag").count(),
+            1,
+        )
+        self.assertEqual(
+            models.Event.objects.get(
+                title="Test Event Update Remove Tag Add New Tag"
+            ).tags.count(),
+            2,
+        )
