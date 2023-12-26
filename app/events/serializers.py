@@ -1,29 +1,30 @@
-from django_grpc_framework import proto_serializers
+from rest_framework import serializers
 
 from app.events.models import Event, Tag
-from app.events.protobuf import events_pb2
 
 
-class TagSerializer(proto_serializers.ModelProtoSerializer):
+class TagSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tag
-        proto_class = events_pb2.Tag
         fields = ["name"]
 
 
-class EventSerializer(proto_serializers.ModelProtoSerializer):
+class EventSerializer(serializers.ModelSerializer):
     tags = TagSerializer(many=True)
+    date = serializers.DateTimeField(format="%Y-%m-%dT%H:%M:%S")
+    created_at = serializers.DateTimeField(format="%Y-%m-%dT%H:%M:%S", read_only=True)
+    updated_at = serializers.DateTimeField(format="%Y-%m-%dT%H:%M:%S", read_only=True)
 
     class Meta:
         model = Event
-        proto_class = events_pb2.Event
-        fields = [
+        fields = (
             "id",
             "title",
             "description",
             "date",
             "location",
             "status",
+            "created_at",
+            "updated_at",
             "tags",
-        ]
-        read_only_fields = ["id", "status", "tags"]
+        )

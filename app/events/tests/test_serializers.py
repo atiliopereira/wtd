@@ -1,6 +1,9 @@
+import datetime
+
 from django.test import TestCase
 from model_bakery import baker
 
+from app.common.utils import datetime_to_drf_str
 from app.events import models
 from app.events.serializers import EventSerializer, TagSerializer
 
@@ -15,7 +18,7 @@ class TestSerializers(TestCase):
             models.Event,
             title="Test Event",
             description="Test Description",
-            date="2021-01-01T00:00:00Z",
+            date=datetime.datetime(2024, 1, 1, 0, 0, tzinfo=datetime.timezone.utc),
             location="Test Location",
         )
         self.event.tags.add(self.tag)
@@ -23,21 +26,28 @@ class TestSerializers(TestCase):
     def test_tag_serializer(self):
         serializer = TagSerializer(self.tag)
         self.assertEqual(
-            serializer.message.name, "Test Tag"
+            serializer.data,
+            {
+                "name": "Test Tag",
+            },
         )
-    
+
     def test_event_serializer(self):
         new_tag = baker.make(models.Tag, name="New Tag")
         self.event.tags.add(new_tag)
         serializer = EventSerializer(self.event)
-        
-        self.assertEqual(serializer.message.title, "Test Event")
-        self.assertEqual(serializer.message.description, "Test Description")
-        self.assertEqual(serializer.message.date, "2021-01-01T00:00:00Z")
-        self.assertEqual(serializer.message.location, "Test Location")
-        self.assertEqual(serializer.message.status, 1) # Pending = 1
-        self.assertEqual(len(serializer.message.tags), 2)
-        self.assertEqual(serializer.message.tags[0].name, "Test Tag")
-        self.assertEqual(serializer.message.tags[1].name, "New Tag")
 
-
+        self.assertEqual(serializer.data["title"], self.event.title)
+        self.assertEqual(serializer.data["description"], self.event.description)
+        self.assertEqual(serializer.data["date"], datetime_to_drf_str(self.event.date))
+        self.assertEqual(serializer.data["location"], self.event.location)
+        self.assertEqual(serializer.data["status"], self.event.status)
+        self.assertEqual(
+            serializer.data["created_at"], datetime_to_drf_str(self.event.created_at)
+        )
+        self.assertEqual(
+            serializer.data["updated_at"], datetime_to_drf_str(self.event.updated_at)
+        )
+        self.assertEqual(len(serializer.data["tags"]), 2)
+        self.assertEqual(serializer.data["tags"][0]["name"], self.tag.name)
+        self.assertEqual(serializer.data["tags"][1]["name"], new_tag.name)
