@@ -47,7 +47,7 @@ DJANGO_APPS = [
 
 EXTERNAL_APPS = [
     "rest_framework",
-    "django_grpc_framework",
+    "drf_spectacular",
 ]
 
 LOCAL_APPS = ["app.events.apps.EventsConfig"]
@@ -140,3 +140,14 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+REST_FRAMEWORK = {
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+    "PAGE_SIZE": 10,
+}
+
+SPECTACULAR_SETTINGS = {
+    "TITLE": "WTD API",
+    "DESCRIPTION": "API for WTD",
+    "VERSION": "1.0.0",
+}
