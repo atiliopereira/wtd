@@ -1,17 +1,28 @@
 # wdt
 
-Platform to create and share social Events. 
-Based on a gRPC Django implementation.
+WTD (what to do?) is an API designed to facilitate the creation and management of social events. This project is built using Python and Django framework.
 
 ## Requirements
 
-- Python (3.6, 3.7, 3.8)
-- Django (2.2, 3.0), Django REST Framework (3.10.x, 3.11.x)
-- gRPC, gRPC tools, proto3
-
-## Test / Use 
-
-You can run a gRPC client to access the service:
+Install dependencies running:
 ```
-$ python manage.py grpcrunserver --dev
+pip install -r requirements.txt
 ```
+
+## Usage
+
+To start using the WTD API, ensure that you have completed the installation steps. Then, run the Django server:
+
+```
+python manage.py runserver$ python manage.py grpcrunserver --dev
+```
+
+Access the API documentation by navigating to http://localhost:8000/api/schema/docs/ in your web browser.
+
+### API Endpoints
+
+    /admin/: Django admin panel.
+    /api/schema/: API schema view.
+    /api/schema/docs/: API documentation.
+    /api/v1/: Endpoints for version 1 of the API.
+
