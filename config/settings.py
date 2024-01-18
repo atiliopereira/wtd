@@ -31,7 +31,7 @@ SECRET_KEY = env.str(
 
 DEBUG = env.bool("DEBUG", True)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -48,6 +48,7 @@ DJANGO_APPS = [
 EXTERNAL_APPS = [
     "rest_framework",
     "drf_spectacular",
+    "corsheaders",
 ]
 
 LOCAL_APPS = ["app.events.apps.EventsConfig"]
@@ -57,6 +58,7 @@ INSTALLED_APPS = DJANGO_APPS + EXTERNAL_APPS + LOCAL_APPS
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -151,3 +153,8 @@ SPECTACULAR_SETTINGS = {
     "DESCRIPTION": "API for WTD",
     "VERSION": "1.0.0",
 }
+
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+]
