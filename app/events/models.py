@@ -20,12 +20,17 @@ class Event(models.Model):
 
     title = models.CharField(max_length=255)
     description = models.TextField()
-    date = models.DateTimeField()
+    start = models.DateTimeField()
+    end = models.DateTimeField()
     location = models.CharField(max_length=255)
-    status = models.CharField(max_length=20, choices=STATUS_TYPES, default=PENDING)
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS_TYPES,
+        default=PENDING,
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     tags = models.ManyToManyField(Tag, blank=True)
 
     def __str__(self):
-        return f"{self.title} - {self.date} ({self.status})"
+        return f"{self.title} - {self.start} ({self.status})"
