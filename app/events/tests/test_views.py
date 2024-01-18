@@ -20,7 +20,8 @@ class TestEventViewSet(TestCase):
             models.Event,
             title="Test Event",
             description="Test Description",
-            date=datetime.datetime(2024, 1, 1, 0, 0, tzinfo=datetime.timezone.utc),
+            start=datetime.datetime(2024, 1, 1, 0, 0, tzinfo=datetime.timezone.utc),
+            end=datetime.datetime(2024, 1, 1, 1, 0, tzinfo=datetime.timezone.utc),
             location="Test Location",
         )
         self.event.tags.add(self.tag)
@@ -39,7 +40,8 @@ class TestEventViewSet(TestCase):
         data = {
             "title": "Test Event Create",
             "description": "Test Description",
-            "date": "2024-01-01T00:00:00Z",
+            "start": "2024-01-01T00:00:00Z",
+            "end": "2024-01-01T00:00:00Z",
             "location": "Test Location",
             "tags": [{"name": "Test Tag"}],
         }
@@ -74,7 +76,8 @@ class TestEventViewSet(TestCase):
         data = {
             "title": "Test Event Updated",
             "description": "Test Description",
-            "date": "2024-01-01T00:00:00Z",
+            "start": "2024-01-01T00:00:00Z",
+            "end": "2024-01-01T01:00:00Z",
             "location": "Test Location",
             "tags": [{"name": "Test Tag"}, {"name": "New Tag"}],
         }
@@ -109,7 +112,8 @@ class TestEventViewSet(TestCase):
                 models.Event,
                 title=event_title,
                 description="Test Description",
-                date=datetime.datetime(2024, 1, 1, 0, 0, tzinfo=datetime.timezone.utc),
+                start=datetime.datetime(2024, 1, 1, 0, 0, tzinfo=datetime.timezone.utc),
+                end=datetime.datetime(2024, 1, 1, 1, 0, tzinfo=datetime.timezone.utc),
                 location="Test Location",
             )
             event.tags.add(self.tag)
