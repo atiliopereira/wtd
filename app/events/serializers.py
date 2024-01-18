@@ -11,7 +11,8 @@ class TagSerializer(serializers.ModelSerializer):
 
 class EventSerializer(serializers.ModelSerializer):
     tags = TagSerializer(many=True)
-    date = serializers.DateTimeField(format="%Y-%m-%dT%H:%M:%S")
+    start = serializers.DateTimeField(format="%Y-%m-%dT%H:%M:%S")
+    end = serializers.DateTimeField(format="%Y-%m-%dT%H:%M:%S")
     created_at = serializers.DateTimeField(format="%Y-%m-%dT%H:%M:%S", read_only=True)
     updated_at = serializers.DateTimeField(format="%Y-%m-%dT%H:%M:%S", read_only=True)
 
@@ -21,7 +22,8 @@ class EventSerializer(serializers.ModelSerializer):
             "id",
             "title",
             "description",
-            "date",
+            "start",
+            "end",
             "location",
             "status",
             "created_at",
@@ -41,7 +43,8 @@ class EventSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         instance.title = validated_data.get("title", instance.title)
         instance.description = validated_data.get("description", instance.description)
-        instance.date = validated_data.get("date", instance.date)
+        instance.start = validated_data.get("start", instance.start)
+        instance.end = validated_data.get("end", instance.end)
         instance.location = validated_data.get("location", instance.location)
         instance.status = validated_data.get("status", instance.status)
         instance.save()

@@ -18,7 +18,8 @@ class TestSerializers(TestCase):
             models.Event,
             title="Test Event",
             description="Test Description",
-            date=datetime.datetime(2024, 1, 1, 0, 0, tzinfo=datetime.timezone.utc),
+            start=datetime.datetime(2024, 1, 1, 0, 0, tzinfo=datetime.timezone.utc),
+            end=datetime.datetime(2024, 1, 1, 1, 0, tzinfo=datetime.timezone.utc),
             location="Test Location",
         )
         self.event.tags.add(self.tag)
@@ -39,7 +40,8 @@ class TestSerializers(TestCase):
 
         self.assertEqual(serializer.data["title"], self.event.title)
         self.assertEqual(serializer.data["description"], self.event.description)
-        self.assertEqual(serializer.data["date"], datetime_to_drf_str(self.event.date))
+        self.assertEqual(serializer.data["start"], datetime_to_drf_str(self.event.start))
+        self.assertEqual(serializer.data["end"], datetime_to_drf_str(self.event.end))
         self.assertEqual(serializer.data["location"], self.event.location)
         self.assertEqual(serializer.data["status"], self.event.status)
         self.assertEqual(
@@ -56,7 +58,8 @@ class TestSerializers(TestCase):
         data = {
             "title": "Test Event Create",
             "description": "Test Description",
-            "date": "2024-01-01T00:00:00Z",
+            "start": "2024-01-01T00:00:00Z",
+            "end": "2024-01-01T01:00:00Z",
             "location": "Test Location",
             "tags": [{"name": "Test Tag"}],
         }
@@ -72,7 +75,8 @@ class TestSerializers(TestCase):
         data = {
             "title": "Test Event Create Create Tag",
             "description": "Test Description",
-            "date": "2024-01-01T00:00:00Z",
+            "start": "2024-01-01T00:00:00Z",
+            "end": "2024-01-01T01:00:00Z",
             "location": "Test Location",
             "tags": [{"name": "New Tag"}],
         }
@@ -92,7 +96,8 @@ class TestSerializers(TestCase):
         data = {
             "title": "Test Event Update",
             "description": "Test Description",
-            "date": "2024-01-01T00:00:00Z",
+            "start": "2024-01-01T00:00:00Z",
+            "end": "2024-01-01T01:00:00Z",
             "location": "Test Location",
             "tags": [{"name": "Test Tag"}],
         }
@@ -120,7 +125,8 @@ class TestSerializers(TestCase):
         data = {
             "title": "Test Event Update Create Tag",
             "description": "Test Description",
-            "date": "2024-01-01T00:00:00Z",
+            "start": "2024-01-01T00:00:00Z",
+            "end": "2024-01-01T01:00:00Z",
             "location": "Test Location",
             "tags": [{"name": "New Tag"}],
         }
@@ -148,7 +154,8 @@ class TestSerializers(TestCase):
         data = {
             "title": "Test Event Update Remove Tag",
             "description": "Test Description",
-            "date": "2024-01-01T00:00:00Z",
+            "start": "2024-01-01T00:00:00Z",
+            "end": "2024-01-01T00:00:00Z",
             "location": "Test Location",
             "tags": [],
         }
@@ -176,7 +183,8 @@ class TestSerializers(TestCase):
         data = {
             "title": "Test Event Update Remove Tag Add New Tag",
             "description": "Test Description",
-            "date": "2024-01-01T00:00:00Z",
+            "start": "2024-01-01T00:00:00Z",
+            "end": "2024-01-01T00:00:00Z",
             "location": "Test Location",
             "tags": [{"name": "New Tag"}, {"name": "Test Tag"}],
         }
