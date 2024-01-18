@@ -12,7 +12,7 @@ class TagAdmin(admin.ModelAdmin):
 
 @admin.register(Event)
 class EventAdmin(admin.ModelAdmin):
-    list_display = ("id", "title", "date", "location", "status")
+    list_display = ("id", "title", "start", "end", "location", "status",)
     list_filter = ("status",)
     search_fields = (
         "id",
@@ -22,7 +22,8 @@ class EventAdmin(admin.ModelAdmin):
     fields = (
         "title",
         "description",
-        "date",
+        "start",
+        "end",
         "location",
         "status",
         "tags",
