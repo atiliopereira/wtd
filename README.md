@@ -1,8 +1,14 @@
 # wdt
 
-WTD (what to do?) is an API designed to facilitate the creation and management of social events. This project is built using Python and Django framework.
+WTD (what to do?) you don't know what to do today? check here!
+Have you seen a concert, a party, a show, or any kind of event? Share it here so others can see it and attend!
 
-## Requirements
+This API is designed to create, share, and find social events.
+
+
+## How to run locally
+
+### Requirements
 
 Install dependencies running:
 ```
@@ -14,15 +20,15 @@ pip install -r requirements.txt
 To start using the WTD API, ensure that you have completed the installation steps. Then, run the Django server:
 
 ```
-python manage.py runserver$ python manage.py grpcrunserver --dev
+python manage.py runserver
 ```
 
-Access the API documentation by navigating to http://localhost:8000/api/schema/docs/ in your web browser.
+Interact with the API by navigating to http://localhost:8000/api/schema/docs/#/v1 in your web browser.
 
 ### API Endpoints
 
     /admin/: Django admin panel.
     /api/schema/: API schema view.
     /api/schema/docs/: API documentation.
-    /api/v1/: Endpoints for version 1 of the API.
-
+    /api/schema/docs/#/v1: Endpoints for version 1 of the API.
+ 
