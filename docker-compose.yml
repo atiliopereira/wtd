@@ -1,0 +1,33 @@
+version: "3.8"
+
+services:
+  postgres-wtd:
+    image: postgres:16
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=wtd
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    healthcheck:
+      test: pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}
+      interval: 2s
+      retries: 5
+  django-wtd:
+    stdin_open: true
+    tty: true
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/code
+    ports:
+      - "9000:8000"
+    env_file:
+      - ./.env
+    restart: unless-stopped
+    depends_on:
+      - postgres-wtd
+volumes:
+  postgres_data:
