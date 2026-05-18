@@ -10,9 +10,10 @@ This API is designed to create, share, and find social events.
 
 ### Requirements
 
-Install dependencies running:
+Install [uv](https://docs.astral.sh/uv/getting-started/installation/), then install dependencies:
+
 ```
-pip install -r requirements.txt
+uv sync
 ```
 
 ## Usage
@@ -20,7 +21,7 @@ pip install -r requirements.txt
 To start using the WTD API, ensure that you have completed the installation steps. Then, run the Django server:
 
 ```
-python manage.py runserver
+uv run python manage.py runserver
 ```
 
 Interact with the API by navigating to http://localhost:8000/api/schema/docs/#/v1 in your web browser.
