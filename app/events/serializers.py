@@ -1,18 +1,30 @@
 from rest_framework import serializers
 
-from app.events.models import Event, Tag
+from app.events.models import Connector, Event
 
 
-class TagSerializer(serializers.ModelSerializer):
+class ConnectorSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Tag
-        fields = ["name"]
+        model = Connector
+        fields = (
+            "id",
+            "name",
+            "source_type",
+            "config",
+            "is_active",
+            "last_run_at",
+            "last_error",
+            "consecutive_failures",
+            "created_at",
+            "updated_at",
+        )
+        read_only_fields = ("id", "last_run_at", "last_error", "consecutive_failures", "created_at", "updated_at")
 
 
 class EventSerializer(serializers.ModelSerializer):
-    tags = TagSerializer(many=True)
     start = serializers.DateTimeField(format="%Y-%m-%dT%H:%M:%S")
-    end = serializers.DateTimeField(format="%Y-%m-%dT%H:%M:%S")
+    end = serializers.DateTimeField(format="%Y-%m-%dT%H:%M:%S", allow_null=True, required=False)
+    confirmed_at = serializers.DateTimeField(format="%Y-%m-%dT%H:%M:%S", read_only=True)
     created_at = serializers.DateTimeField(format="%Y-%m-%dT%H:%M:%S", read_only=True)
     updated_at = serializers.DateTimeField(format="%Y-%m-%dT%H:%M:%S", read_only=True)
 
@@ -22,36 +34,32 @@ class EventSerializer(serializers.ModelSerializer):
             "id",
             "title",
             "description",
+            "category",
             "start",
             "end",
-            "location",
+            "venue_name",
+            "venue_address",
+            "city",
+            "is_free",
+            "price_info",
+            "ticket_url",
+            "image_url",
+            "source_type",
+            "source_url",
+            "source_connector",
+            "external_id",
             "status",
+            "confirmed",
+            "confirmed_by",
+            "confirmed_at",
             "created_at",
             "updated_at",
-            "tags",
         )
-        read_only_fields = ("id", "created_at", "updated_at")
-
-    def create(self, validated_data):
-        tags = validated_data.pop("tags")
-        event = Event.objects.create(**validated_data)
-        for tag in tags:
-            tag, _ = Tag.objects.get_or_create(**tag)
-            event.tags.add(tag)
-        return event
-
-    def update(self, instance, validated_data):
-        instance.title = validated_data.get("title", instance.title)
-        instance.description = validated_data.get("description", instance.description)
-        instance.start = validated_data.get("start", instance.start)
-        instance.end = validated_data.get("end", instance.end)
-        instance.location = validated_data.get("location", instance.location)
-        instance.status = validated_data.get("status", instance.status)
-        instance.save()
-        instance.tags.clear()
-
-        tags = validated_data.pop("tags")
-        for tag in tags:
-            tag, _ = Tag.objects.get_or_create(**tag)
-            instance.tags.add(tag)
-        return instance
+        read_only_fields = (
+            "id",
+            "confirmed",
+            "confirmed_by",
+            "confirmed_at",
+            "created_at",
+            "updated_at",
+        )
